@@ -21,9 +21,12 @@ public class Files {
 
     private static void CreateFolder(File object) {
         if (!object.exists()) {
-            if (object.mkdir())
-                logInfo.add("Каталог создан " + object);
-//            System.out.println("Каталог создан " + object);
+            try {
+                if (object.mkdir())
+                    logInfo.add("Каталог создан " + object);
+            } catch (SecurityException ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
         } else {
             logInfo.add("Каталог уже существует " + object);
         }
@@ -31,9 +34,11 @@ public class Files {
 
     private static void CreateFile(File object) throws IOException {
         if (!object.exists()) {
-            if (object.createNewFile()) {
-                logInfo.add("Файл создан " + object);
-//                System.out.println("Файл создан " + object);
+            try {
+                if (object.createNewFile())
+                    logInfo.add("Файл создан " + object);
+            } catch (SecurityException ex) {
+                throw new RuntimeException(ex.getMessage());
             }
         } else {
             logInfo.add("Файл уже существует " + object);
@@ -53,18 +58,23 @@ public class Files {
     }
 
     public static void MakeFileStructure() throws IOException {
-        for (String entry : listFilesFolders.keySet()) {
-            File newDir = new File(Files.rootFolder, entry);
-            CreateFolder(newDir);
-            for (String object : Files.listFilesFolders.get(entry)) {
-                if (object.contains(".")) {
-                    CreateFile(new File(newDir, object));
-                } else {
-                    CreateFolder(new File(newDir, object));
+        if(new File(rootFolder).exists()) {
+            for (String entry : listFilesFolders.keySet()) {
+                File newDir = new File(Files.rootFolder, entry);
+                CreateFolder(newDir);
+                for (String object : Files.listFilesFolders.get(entry)) {
+                    if (object.contains(".")) {
+                        CreateFile(new File(newDir, object));
+                    } else {
+                        CreateFolder(new File(newDir, object));
+                    }
                 }
             }
+            saveInfoToLog();
+        } else {
+            throw new RuntimeException("Отсутствует корневая папка " + rootFolder);
         }
-        saveInfoToLog();
+
     }
 
     public static void zipFiles(String archiveFileName, String... datFiles) {
