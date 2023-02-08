@@ -12,19 +12,19 @@ public class Main {
         GameProgress game2 = new GameProgress(50,2,9,11.9);
         GameProgress game3 = new GameProgress(10,2,15,99.1);
 
+        String fileName1 = "game1.dot";
+        String fileName2 = "game2.dot";
+        String fileName3 = "game3.dot";
+        String archiveFileName = "archive.zip";
+
         GameSerialize gameSerialize = new GameSerialize();
-        gameSerialize.saveGame("game1.dot", game1);
-        gameSerialize.saveGame("game2.dot", game2);
-        gameSerialize.saveGame("game3.dot", game3);
+        gameSerialize.saveGame(fileName1, game1);
+        gameSerialize.saveGame(fileName1, game2);
+        gameSerialize.saveGame(fileName1, game3);
 
-        String file1 = "game1.dot";
-        String file2 = "game2.dot";
-        String file3 = "game3.dot";
-        String archiveFile = "archive.zip";
+        Files.zipFiles(archiveFileName, fileName1, fileName2, fileName3);
 
-        Files.zipFiles(archiveFile, file1, file2, file3);
-
-        GameProgress game4 = gameSerialize.loadGame(Files.UnZipFiles(archiveFile).get(0));
+        GameProgress game4 = gameSerialize.loadGame(Files.UnZipFiles(archiveFileName).get(0));
         System.out.println(game4);
     }
 }
