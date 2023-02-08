@@ -19,7 +19,7 @@ public class Files {
         put("temp", List.of("temp.txt"));
     }};
 
-    private static void CreateFolder(File object) {
+    private static void createFolder(File object) {
         if (!object.exists()) {
             try {
                 if (object.mkdir())
@@ -32,7 +32,7 @@ public class Files {
         }
     }
 
-    private static void CreateFile(File object) throws IOException {
+    private static void createFile(File object) throws IOException {
         if (!object.exists()) {
             try {
                 if (object.createNewFile())
@@ -57,16 +57,16 @@ public class Files {
         }
     }
 
-    public static void MakeFileStructure() throws IOException {
+    public static void makeFileStructure() throws IOException {
         if(new File(rootFolder).exists()) {
             for (String entry : listFilesFolders.keySet()) {
                 File newDir = new File(Files.rootFolder, entry);
-                CreateFolder(newDir);
+                createFolder(newDir);
                 for (String object : Files.listFilesFolders.get(entry)) {
                     if (object.contains(".")) {
-                        CreateFile(new File(newDir, object));
+                        createFile(new File(newDir, object));
                     } else {
-                        CreateFolder(new File(newDir, object));
+                        createFolder(new File(newDir, object));
                     }
                 }
             }
@@ -103,7 +103,7 @@ public class Files {
         }
     }
 
-    public static List<File> UnZipFiles(String archiveName) {
+    public static List<File> unZipFiles(String archiveName) {
         List<File> outputFiles = new ArrayList<>();
         try (ZipInputStream zipIn = new ZipInputStream(new
                 FileInputStream(saveGameFolder + archiveName))) {

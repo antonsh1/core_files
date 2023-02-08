@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Files.MakeFileStructure();
+        Files.makeFileStructure();
 
         GameProgress game1 = new GameProgress(100,2,10,22.2);
         GameProgress game2 = new GameProgress(50,2,9,11.9);
@@ -24,7 +24,7 @@ public class Main {
 
         Files.zipFiles(archiveFileName, fileName1, fileName2, fileName3);
 
-        GameProgress game4 = gameSerialize.loadGame(Files.UnZipFiles(archiveFileName).get(0));
+        GameProgress game4 = gameSerialize.loadGame(Files.unZipFiles(archiveFileName).get(0));
         System.out.println(game4);
     }
 }
